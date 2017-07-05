@@ -1,0 +1,47 @@
+---
+# tasks file for lynis
+
+- name: Create directories
+  file: name={{item}} state=directory owner=root group=root mode=0755
+  with_items:
+    - /etc/lynis
+
+- name: Import gpg keys
+  rpm_key: state=present key={{item}} validate_certs={{validate_certs|default('yes')}}
+  with_items:
+    - https://packages.cisofy.com/keys/cisofy-software-rpms-public.key
+  when: ansible_os_family == 'Redhat'
+
+- name: Yum repository
+  template: src="{{item.src}}" dest="{{item.dest}}" owner={{item.owner|default('root')}}  group="{{item.group|default('root')}}" mode="{{item.mode|default('0644')}}"
+  with_items:
+    - { src: "lynis.repo", dest: "/etc/yum.repos.d/lynis.repo" }
+  when: ansible_os_family == 'Redhat'
+
+- name: Install Apt-keys
+  apt_key: keyserver="{{item.keyserver|default('keyserver.ubuntu.com')}}" id="{{item.id}}" 
+  with_items:
+    - { id: "C80E383C3DE9F082E01391A0366C67DE91CA5D5F", comment: "Lynis" }
+  when: ansible_os_family == 'Debian'
+
+- name: Apt repository
+  template: src="{{item.src}}" dest="{{item.dest}}" owner={{item.owner|default('root')}}  group="{{item.group|default('root')}}" mode="{{item.mode|default('0644')}}"
+  with_items:
+    - { src: "lynis.list", dest: "/etc/apt/sources.list.d/lynis.list" }
+  when: ansible_os_family == 'Debian'
+
+- name: Install lynis packages
+  package: name="{{item}}" state=latest
+  with_items:
+    - lynis
+    - "{% if lynis_license_key is defined %}lynis-plugins{% endif %}"
+
+- name: Template configuration-files
+  template: src="{{item.src}}" dest="{{item.dest}}" owner="{{item.owner|default('root')}}" group="{{item.group|default('root')}}" mode="{{item.perm|default('0755')}}"
+  with_items:
+    - { src: "lynis-custom.prf.j2", dest: "/etc/lynis/custom.prf", mode: "0644" }
+
+- name: Setup cronjob for lynis
+  cron: cron_file=lynis user=root hour=3 minute=10 name="nightly Lynis run" state=present job="/usr/bin/lynis audit system --upload"
+  ignore_errors: yes
+

@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+{% if lynis_license_key is defined %}
+[lynis-customer]
+name=CISOfy Software - Lynis package
+baseurl=https://packages.cisofy.com/customers/{{lynis_license_key}}/lynis/rpm/
+enabled=1
+gpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key
+gpgcheck=1
+{% endif %}
+
+[lynis-community]
+name=CISOfy Software - Lynis package
+baseurl=https://packages.cisofy.com/community/lynis/rpm/
+enabled=1
+gpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key
+gpgcheck=1
+

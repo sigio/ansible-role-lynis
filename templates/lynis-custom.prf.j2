@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+
+quick=yes
+
+{% for test in lynis_skip_tests %}
+skip-test={{test}}
+{% endfor %}
+
+{% if lynis_license_key is defined %}
+config:license_key:{{lynis_license_key}}:
+config:upload-server:portal.cisofy.com:
+{% endif %}
+
