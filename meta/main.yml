@@ -32,17 +32,15 @@ galaxy_info:
   #
   # platforms is a list of platforms, and each platform has a name and a list of versions.
   #
-  # platforms:
-  # - name: Fedora
-  #   versions:
-  #   - all
-  #   - 25
-  # - name: SomePlatform
-  #   versions:
-  #   - all
-  #   - 1.0
-  #   - 7
-  #   - 99.99
+  platforms:
+  - name: Debian
+    versions:
+    - 7
+    - 8
+    - 9
+  - name: RHEL
+    versions:
+    - all
 
   galaxy_tags:
     - lynis
