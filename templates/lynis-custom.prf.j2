@@ -2,6 +2,11 @@
 
 quick=yes
 
+{% for config in lynis_custom_configs %}
+{{config}}
+{% endfor %}
+
+
 {% for test in lynis_skip_tests %}
 skip-test={{test}}
 {% endfor %}
@@ -10,4 +15,3 @@ skip-test={{test}}
 config:license_key:{{lynis_license_key}}:
 config:upload-server:portal.cisofy.com:
 {% endif %}
-
