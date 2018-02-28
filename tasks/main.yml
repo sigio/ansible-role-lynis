@@ -19,7 +19,7 @@
   when: ansible_os_family == 'Redhat'
 
 - name: Install Apt-keys
-  apt_key: keyserver="{{item.keyserver|default('keyserver.ubuntu.com')}}" id="{{item.id}}" 
+  apt_key: keyserver="{{item.keyserver|default('keyserver.ubuntu.com')}}" id="{{item.id}}"
   with_items:
     - { id: "C80E383C3DE9F082E01391A0366C67DE91CA5D5F", comment: "Lynis" }
   when: ansible_os_family == 'Debian'
@@ -34,7 +34,7 @@
   package: name="{{item}}" state=latest
   with_items:
     - lynis
-    - "{% if lynis_license_key is defined %}lynis-plugins{% endif %}"
+    - "{% if lynis_license_key %}lynis-plugins{%else%}[]{% endif %}"
 
 - name: Template configuration-files
   template: src="{{item.src}}" dest="{{item.dest}}" owner="{{item.owner|default('root')}}" group="{{item.group|default('root')}}" mode="{{item.perm|default('0755')}}"

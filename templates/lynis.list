@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
 
-{% if lynis_license_key is defined %}
+{% if lynis_license_key %}
 # lynis enterprise
 deb [arch={{facter_architecture|default('amd64')}}] https://packages.cisofy.com/customers/{{lynis_license_key}}/lynis/deb/ stable main
 {% endif %}
