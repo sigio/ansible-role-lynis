@@ -8,6 +8,6 @@ skip-test={{test}}
 
 {% if lynis_license_key is defined %}
 config:license_key:{{lynis_license_key}}:
-config:upload-server:portal.cisofy.com:
+config:upload-server:{{lynis_upload_server}}:
 {% endif %}
 
