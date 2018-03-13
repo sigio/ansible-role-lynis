@@ -11,3 +11,6 @@ config:license_key:{{lynis_license_key}}:
 config:upload-server:{{lynis_upload_server}}:
 {% endif %}
 
+{% if lynis_extra_options is defined %}
+{{lynis_extra_options}}
+{% endif %}
