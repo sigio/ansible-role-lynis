@@ -29,9 +29,13 @@
   with_items:
     - { src: "lynis.list", dest: "/etc/apt/sources.list.d/lynis.list" }
   when: ansible_os_family == 'Debian'
+  register: lynis_repo
 
 - name: Install lynis packages
-  package: name="{{item}}" state=latest
+  apt:
+    name: "{{item}}"
+    state: latest
+    update_cache: "{% if lynis_repo|changed %}yes{% else %}no{% endif %}"
   with_items:
     - lynis
     - "{% if lynis_license_key %}lynis-plugins{%else%}[]{% endif %}"
