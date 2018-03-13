@@ -16,6 +16,7 @@
   template: src="{{item.src}}" dest="{{item.dest}}" owner={{item.owner|default('root')}}  group="{{item.group|default('root')}}" mode="{{item.mode|default('0644')}}"
   with_items:
     - { src: "lynis.repo", dest: "/etc/yum.repos.d/lynis.repo" }
+  register: lynis_repo_rpm
   when: ansible_os_family == 'Redhat'
 
 - name: Install Apt-keys
@@ -29,15 +30,20 @@
   with_items:
     - { src: "lynis.list", dest: "/etc/apt/sources.list.d/lynis.list" }
   when: ansible_os_family == 'Debian'
-  register: lynis_repo
+  register: lynis_repo_apt
+
+- name: Reload apt-caches
+  apt:
+    update_cache: yes
+  when: ansible_os_family == 'Debian' and lynis_repo_apt|changed
 
 - name: Install lynis packages
-  apt:
+  package:
     name: "{{item}}"
     state: latest
-    update_cache: "{% if lynis_repo|changed %}yes{% else %}no{% endif %}"
   with_items:
     - lynis
+    - curl
     - "{% if lynis_license_key %}lynis-plugins{%else%}[]{% endif %}"
 
 - name: Template configuration-files
@@ -45,7 +51,26 @@
   with_items:
     - { src: "lynis-custom.prf.j2", dest: "/etc/lynis/custom.prf", mode: "0644" }
 
+- name: Find path for lynis binary (different on EL)
+  command: "which lynis"
+  ignore_errors: yes
+  check_mode: no
+  register: lynis_path
+
+- name: Set lynis_binary path
+  set_fact:
+    lynis_binary: "{{lynis_path.stdout}}"
+    cacheable: true
+  check_mode: yes
+
 - name: Setup cronjob for lynis
-  cron: cron_file=lynis user=root hour=3 minute=10 name="nightly Lynis run" state=present job="/usr/bin/lynis audit system --upload"
+  cron:
+      cron_file: lynis
+      user: root
+      hour: 3
+      minute: 10
+      name: "nightly Lynis run"
+      state: present
+      job: "{{lynis_binary}} audit system --upload"
   ignore_errors: yes
 
