@@ -53,9 +53,9 @@
 
 - name: Find path for lynis binary (different on EL)
   command: "which lynis"
-  ignore_errors: yes
   check_mode: no
   register: lynis_path
+  changed_when: false
 
 - name: Set lynis_binary path
   set_fact:
