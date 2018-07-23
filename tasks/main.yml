@@ -43,6 +43,7 @@
     state: latest
   with_items:
     - lynis
+    - apt-transport-https
     - curl
     - "{% if lynis_license_key %}lynis-plugins{%else%}[]{% endif %}"
 
