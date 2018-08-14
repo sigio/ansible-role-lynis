@@ -72,6 +72,6 @@
       minute: 10
       name: "nightly Lynis run"
       state: present
-      job: "{{lynis_binary}} audit system --upload"
+      job: "{{lynis_binary}} audit system --upload > /dev/null"
   ignore_errors: yes
 
