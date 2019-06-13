@@ -5,6 +5,7 @@
 lynis_license_key: false
 lynis_upload_server: "portal.cisofy.com"
 lynis_binary: "/usr/sbin/lynis"
+lynis_generate_hostids: "true"
 
 # Which tests to skip
 # As a list, one per line

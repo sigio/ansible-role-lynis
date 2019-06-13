@@ -75,3 +75,12 @@
       job: "{{lynis_binary}} audit system --upload > /dev/null"
   ignore_errors: yes
 
+- name: Generate hostid values
+  command:
+    creates: /etc/lynis/hostids
+    argv:
+      - lynis generate hostids --save
+  when:
+    - lynis_generate_hostids|bool
+  tags:
+    - lynishostids
