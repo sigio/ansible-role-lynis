@@ -2,15 +2,18 @@
 
 quick=yes
 
-{% for test in lynis_skip_tests %}
+# Skipped tests
+{% for test in lynis_skip_tests|default([]) %}
 skip-test={{test}}
 {% endfor %}
 
 {% if lynis_license_key is defined %}
+# Use license key / Specify upload target
 config:license_key:{{lynis_license_key}}:
 config:upload-server:{{lynis_upload_server}}:
 {% endif %}
 
-{% if lynis_extra_options is defined %}
-{{lynis_extra_options}}
-{% endif %}
+# Extra options
+{% for option in lynis_extra_options|default([]) %}
+{{option}}
+{% endfor %}

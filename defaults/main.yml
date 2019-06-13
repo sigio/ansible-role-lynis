@@ -4,6 +4,7 @@
 # Define your 'lynis_license_key', or leave it commented for community version
 lynis_license_key: false
 lynis_upload_server: "portal.cisofy.com"
+lynis_binary: "/usr/sbin/lynis"
 
 # Which tests to skip
 # As a list, one per line
