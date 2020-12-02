@@ -1,13 +1,14 @@
 # {{ ansible_managed }}
 
-{% if lynis_license_key is defined %}
+{% if lynis_license_key is defined and lynis_license_key != "" %}
 [lynis-customer]
 name=CISOfy Software - Lynis package
 baseurl=https://packages.cisofy.com/customers/{{lynis_license_key}}/lynis/rpm/
 enabled=1
 gpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key
 gpgcheck=1
-{% endif %}
+
+{% else %}
 
 [lynis-community]
 name=CISOfy Software - Lynis package
@@ -16,3 +17,4 @@ enabled=1
 gpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key
 gpgcheck=1
 
+{% endif %}

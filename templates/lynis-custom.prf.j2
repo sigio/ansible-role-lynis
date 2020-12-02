@@ -7,7 +7,7 @@ quick=yes
 skip-test={{test}}
 {% endfor %}
 
-{% if lynis_license_key is defined %}
+{% if lynis_license_key is defined and lynis_license_key != "" %}
 # Use license key / Specify upload target
 config:license_key:{{lynis_license_key}}:
 config:upload-server:{{lynis_upload_server}}:
