@@ -79,7 +79,10 @@
   command:
     creates: /etc/lynis/hostids
     argv:
-      - lynis generate hostids --save
+      - "{{lynis_binary}}"
+      - generate
+      - hostids
+      - --save
   when:
     - lynis_generate_hostids|bool
   tags:
