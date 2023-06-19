@@ -10,3 +10,8 @@ lynis_generate_hostids: "true"
 # Which tests to skip
 # As a list, one per line
 lynis_skip_tests: []
+
+
+# Additional custom configurations
+# reference: https://github.com/CISOfy/lynis/blob/master/default.prf
+lynis_custom_configs: []
