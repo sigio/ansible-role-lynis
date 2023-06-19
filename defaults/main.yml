@@ -1,8 +1,11 @@
 ---
 # defaults file for lynis
 
-# Define your 'lynis_license_key', or leave it commented for community version
-lynis_license_key: false
+# Define your 'lynis_license_key', or leave it empty ("") for community version
+lynis_license_key: ""
+lynis_upload_server: "portal.cisofy.com"
+lynis_binary: "/usr/sbin/lynis"
+lynis_generate_hostids: "true"
 
 # Which tests to skip
 # As a list, one per line
