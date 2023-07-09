@@ -6,8 +6,6 @@ quick=yes
 {{ config }}
 {% endfor %}
 
-
-{% for test in lynis_skip_tests %}
 # Skipped tests
 {% for test in lynis_skip_tests | default([]) %}
 skip-test={{ test }}
